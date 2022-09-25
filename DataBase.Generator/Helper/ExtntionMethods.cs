@@ -6,11 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using DataBase.Generator.Models;
 
 namespace DataBase.Generator
 {
     public static class ExtntionMethods
     {
+       
         public static string GetNavBar(this string s)
         {
             s = s.Replace(Form1.navBar, $@" <header class='main-header'>

@@ -49,7 +49,7 @@ namespace DataBase.Generator
             {
                 loadServerDetails = ExecuteStoredProcedure<ServerDetails>
                 (@"SELECT [Edition]= cast(SERVERPROPERTY('Edition') as nvarchar(max)),[Product_Version]= cast(SERVERPROPERTY('ProductVersion') as nvarchar(max)),
-[Collation]= cast(SERVERPROPERTY('Collation') as nvarchar(max)),[CLR_Version] = cast(SERVERPROPERTY('BuildClrVersion') as nvarchar(max))")
+                    [Collation]= cast(SERVERPROPERTY('Collation') as nvarchar(max)),[CLR_Version] = cast(SERVERPROPERTY('BuildClrVersion') as nvarchar(max))")
                 .FirstOrDefault();
             }
             catch (Exception ex)
@@ -62,77 +62,96 @@ namespace DataBase.Generator
             if (data.Count > 0)
             {
                 CopyResToRes2();
+                BuildHtml(loadServerDetails, data);
+            }
+        }
 
-                var allTablesWithCoulmns = data.Where(x => x.Type == "Table").ToList();
-                var allTriggers = data.Where(x => x.Type == "Trigger").ToList();
-                var allStoredProcedure = data.Where(x => x.Type == "Stored Procedure").ToList();
-                var allViewsWithCoulmns = data.Where(x => x.Type == "View").ToList();
-                var allConstrain = data.Where(x => x.Type == "Constrain").ToList();
-                var allIndexs = data.Where(x => x.Type == "Index").ToList();
+        private void BuildHtml(ServerDetails loadServerDetails, List<ListAlldata> data)
+        {
+            var allTablesWithCoulmns = data.Where(x => x.Type == "Table").ToList();
+            var allTriggers = data.Where(x => x.Type == "Trigger").ToList();
+            var allStoredProcedure = data.Where(x => x.Type == "Stored Procedure").ToList();
+            var allViewsWithCoulmns = data.Where(x => x.Type == "View").ToList();
+            var allConstrain = data.Where(x => x.Type == "Constrain").ToList();
+            var allIndexs = data.Where(x => x.Type == "Index").ToList();
 
-                var allTables = allTablesWithCoulmns.DistinctBy(x => x.TableName).ToList();
-                var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
+            var allTables = allTablesWithCoulmns.DistinctBy(x => x.TableName).ToList();
+            var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
 
-                var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html")
-                    .GetNavBar();
+            var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html")
+                .GetNavBar();
 
-                index = index.Replace(TablesCount, allTables.Count() + "");
-                index = index.Replace(ViewsCount, allViews.Count() + "");
-                index = index.Replace(ColumnsCount, allTablesWithCoulmns.Count + "");
-                index = index.Replace(ConstraintsCount, allTablesWithCoulmns.Count + "");
-                index = index.Replace(SchemasCount, data.Select(c => c.SchemaName)
-                    .DistinctBy(x => x).Count() + "");
-                index = index.Replace(StoredProceduresCount, allStoredProcedure.Count + "");
+            index = BuildIndex(data, allTablesWithCoulmns, allStoredProcedure,
+                allTables, allViews, index);
 
-                var trs = "";
-                var source1 = allTablesWithCoulmns.GroupBy(x =>
-                new GroupBuListData
-                {
-                    TableName = x.TableName,
-                    SchemaName = x.SchemaName,
-                    Type = x.Type
-                });
-                source1 = source1.Concat(allViewsWithCoulmns.GroupBy(x =>
-                new GroupBuListData
-                {
-                    TableName = x.TableName,
-                    SchemaName = x.SchemaName,
-                    Type = x.Type
-                }));
+            var trs = "";
+            IEnumerable<IGrouping<GroupBuListData, ListAlldata>> source1 =
+                LoadAllTablesAndViews(allTablesWithCoulmns, allViewsWithCoulmns);
 
-                foreach (var item in source1)
-                {
-                    trs += $@"<tr class='tbl even' valign='top'>
+            foreach (var item in source1)
+            {
+                trs += $@"<tr class='tbl even' valign='top'>
                                     <td class='detail'>{item.Key.SchemaName}</td>
                                     <td class='detail'><a href='tables/{item.Key.TableName}.html'>{item.Key.TableName}</a></td>
                                     <td class='detail' align='right'>{item.Count()}</td>
                                     <td class='detail' align='right'>{item.Key.Type}</td>
                                     <td class='comment detail' style='display: table-cell;'></td>
                                 </tr>";
-                    BuildTablePages(item, allIndexs, allConstrain);
+                BuildTablePages(item, allIndexs, allConstrain);
 
-                }
-                index = index.Replace(TablesAndViewsTrs, trs);
-                index = index.Replace(DataBaseDetails, loadServerDetails.GetDetailsString());
-                File.WriteAllText(currentDirectory + ResourceTemp + "\\index.html", index);
-
-                // create columns
-
-                var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html").GetNavBar();
-                var cls = allTablesWithCoulmns.Select(x => x.GetForAllColumns())
-                    .Aggregate((a, b) => a + b);
-
-                columns = columns.Replace(ColumnsCount, cls);
-                File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
-                
-                var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
-                var rts = allTables.Select(x=>x.SchemaName).Distinct()
-                    .Aggregate((a, b) => a + b);
-
-                columns = columns.Replace(Schemas, rts);
-                File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", columns);
             }
+            index = index.Replace(TablesAndViewsTrs, trs);
+            index = index.Replace(DataBaseDetails, loadServerDetails.GetDetailsString());
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\index.html", index);
 
+            // create columns
+
+            var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html").GetNavBar();
+            var cls = allTablesWithCoulmns.Select(x => x.GetForAllColumns())
+                .Aggregate((a, b) => a + b);
+
+            columns = columns.Replace(ColumnsCount, cls);
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
+
+            var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
+            var rts = allTables.Select(x => x.SchemaName).Distinct()
+                .Aggregate((a, b) => a + b);
+
+            columns = columns.Replace(Schemas, rts);
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", columns);
+        }
+
+        private static IEnumerable<IGrouping<GroupBuListData, ListAlldata>> 
+            LoadAllTablesAndViews(List<ListAlldata> allTablesWithCoulmns, List<ListAlldata> allViewsWithCoulmns)
+        {
+            var source1 = allTablesWithCoulmns.GroupBy(x =>
+            new GroupBuListData
+            {
+                TableName = x.TableName,
+                SchemaName = x.SchemaName,
+                Type = x.Type
+            });
+            source1 = source1.Concat(allViewsWithCoulmns.GroupBy(x =>
+            new GroupBuListData
+            {
+                TableName = x.TableName,
+                SchemaName = x.SchemaName,
+                Type = x.Type
+            }));
+            return source1;
+        }
+
+        private static string BuildIndex(List<ListAlldata> data, List<ListAlldata> allTablesWithCoulmns,
+            List<ListAlldata> allStoredProcedure, List<ListAlldata> allTables, List<ListAlldata> allViews, string index)
+        {
+            index = index.Replace(TablesCount, allTables.Count() + "");
+            index = index.Replace(ViewsCount, allViews.Count() + "");
+            index = index.Replace(ColumnsCount, allTablesWithCoulmns.Count + "");
+            index = index.Replace(ConstraintsCount, allTablesWithCoulmns.Count + "");
+            index = index.Replace(SchemasCount, data.Select(c => c.SchemaName)
+                .DistinctBy(x => x).Count() + "");
+            index = index.Replace(StoredProceduresCount, allStoredProcedure.Count + "");
+            return index;
         }
 
         private void BuildTablePages(IGrouping<GroupBuListData, ListAlldata> item, List<ListAlldata> allIndexs,
