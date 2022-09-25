@@ -115,9 +115,9 @@ namespace DataBase.Generator
 
             var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
             var rts = allTables.Select(x => x.SchemaName).Distinct()
-                .Aggregate((a, b) => a + b);
+                .Aggregate((a, b) => "<tr><td>" + a + "</td></tr>" + "<tr><td>" + b + "</td></tr>");
 
-            schemas = schemas.Replace(Schemas, schemas);
+            schemas = schemas.Replace(Schemas, rts);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", schemas);
         }
 
