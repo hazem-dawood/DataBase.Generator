@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1A28C9D8-3011-47F3-9B6E-5621397A94D1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>DataBase.Generator</RootNamespace>
+    <AssemblyName>DataBase.Generator</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regulard41d.eot" />
+    <None Include="Resources\lib\font-awesome\fonts\fontawesome-webfont3e6e.eot" />
+    <None Include="Resources\lib\font-awesome\fonts\fontawesome-webfont3e6e.ttf" />
+    <None Include="Resources\lib\font-awesome\fonts\fontawesome-webfont3e6e.woff" />
+    <None Include="Resources\lib\font-awesome\fonts\fontawesome-webfont3e6e.woff2" />
+    <None Include="Resources\lib\font-awesome\fonts\fontawesome-webfontd41d.eot" />
+    <None Include="Resources\lib\ionicons\fonts\ionicons28b5.eot" />
+    <None Include="Resources\lib\ionicons\fonts\ionicons28b5.ttf" />
+    <None Include="Resources\lib\ionicons\fonts\ionicons28b5.woff" />
+    <None Include="Resources\fonts\indieflower\indie-flower-v8-latin-regular.eot" />
+    <None Include="Resources\fonts\indieflower\indie-flower-v8-latin-regular.ttf" />
+    <None Include="Resources\fonts\indieflower\indie-flower-v8-latin-regular.woff" />
+    <None Include="Resources\fonts\indieflower\indie-flower-v8-latin-regular.woff2" />
+    <None Include="Resources\fonts\indieflower\indie-flower-v8-latin-regulard41d.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300.ttf" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300.woff" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300.woff2" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300d41d.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300italic.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300italic.ttf" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300italic.woff" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300italic.woff2" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300italicd41d.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600.ttf" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600.woff" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600.woff2" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600d41d.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600italic.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600italic.ttf" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600italic.woff" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600italic.woff2" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600italicd41d.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-700.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-700.ttf" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-700.woff" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-700.woff2" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-700d41d.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-regular.eot" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-regular.ttf" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-regular.woff" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-regular.woff2" />
+    <None Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-regulard41d.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\index.html" />
+    <Content Include="Resources\lib\admin-lte\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Resources\lib\admin-lte\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Resources\lib\admin-lte\dist\css\AdminLTE.min.css" />
+    <Content Include="Resources\lib\admin-lte\dist\css\skins\_all-skins.min.css" />
+    <Content Include="Resources\lib\admin-lte\dist\img\boxed-bg.html" />
+    <Content Include="Resources\lib\admin-lte\dist\js\app.min.js" />
+    <Content Include="Resources\lib\admin-lte\plugins\fastclick\fastclick.js" />
+    <Content Include="Resources\lib\admin-lte\plugins\jQueryUI\jquery-ui.min.js" />
+    <Content Include="Resources\lib\admin-lte\plugins\jQuery\jquery-2.2.3.min.js" />
+    <Content Include="Resources\lib\admin-lte\plugins\slimScroll\jquery.slimscroll.min.js" />
+    <Content Include="Resources\lib\anchor-js\anchor.min.js" />
+    <Content Include="Resources\lib\codemirror\codemirror.css" />
+    <Content Include="Resources\lib\codemirror\codemirror.js" />
+    <Content Include="Resources\lib\codemirror\sql.js" />
+    <Content Include="Resources\lib\datatables.net-bs\css\dataTables.bootstrap.min.css" />
+    <Content Include="Resources\lib\datatables.net-bs\js\dataTables.bootstrap.min.js" />
+    <Content Include="Resources\lib\datatables.net-buttons-bs\css\buttons.bootstrap.min.css" />
+    <Content Include="Resources\lib\datatables.net-buttons-bs\js\buttons.bootstrap.min.js" />
+    <Content Include="Resources\lib\datatables.net-buttons\buttons.colVis.min.js" />
+    <Content Include="Resources\lib\datatables.net-buttons\buttons.html5.min.js" />
+    <Content Include="Resources\lib\datatables.net-buttons\buttons.print.min.js" />
+    <Content Include="Resources\lib\datatables.net-buttons\dataTables.buttons.min.js" />
+    <Content Include="Resources\lib\datatables.net\jquery.dataTables.min.js" />
+    <Content Include="Resources\lib\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Resources\lib\font-awesome\fonts\fontawesome-webfont3e6e.svg" />
+    <Content Include="Resources\lib\ionicons\css\ionicons.min.css" />
+    <Content Include="Resources\lib\ionicons\fonts\ionicons28b5.svg" />
+    <Content Include="Resources\lib\js-xlsx\xlsx.full.min.js" />
+    <Content Include="Resources\lib\pdfmake\pdfmake.min.js" />
+    <Content Include="Resources\lib\pdfmake\vfs_fonts.js" />
+    <Content Include="Resources\lib\salvattore\salvattore.css" />
+    <Content Include="Resources\lib\salvattore\salvattore.min.js" />
+    <Content Include="Resources\favicon.png" />
+    <Content Include="Resources\fonts\indieflower\indie-flower-v8-latin-regular.svg" />
+    <Content Include="Resources\fonts\indieflower\indie-flower.css" />
+    <Content Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300.svg" />
+    <Content Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-300italic.svg" />
+    <Content Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600.svg" />
+    <Content Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-600italic.svg" />
+    <Content Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-700.svg" />
+    <Content Include="Resources\fonts\source-sans-pro\source-sans-pro-v10-latin-regular.svg" />
+    <Content Include="Resources\fonts\source-sans-pro\source-sans-pro.css" />
+    <Content Include="Resources\main.js" />
+    <Content Include="Resources\database.css" />
+    <Content Include="Resources\database.js" />
+    <Content Include="Resources\sql.sql" />
+    <Content Include="Resources\tables\Index.html" />
+    <Content Include="Resources\tables\table.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
