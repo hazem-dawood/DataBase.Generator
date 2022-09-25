@@ -12,11 +12,15 @@ namespace DataBase.Generator
 {
     public partial class Form1 : Form
     {
+        internal const string navBar = "@NavBar";
+        internal const string footer = "@Footer";
+        internal const string Schemas = "@Schemas";
+
         private const string ResourceTemp = "Resources1";
         private readonly string query;
         private readonly string currentDirectory;
 
-        private string connectionString = "Persist Security Info=true;Server=108.170.14.114\\SQLJMDDS;Database=jmdssnew;user id=sa;password=matrix@#200;MultipleActiveResultSets=true;";
+        private readonly string connectionString = "Persist Security Info=true;Server=108.170.14.114\\SQLJMDDS;Database=jmdssnew;user id=sa;password=matrix@#200;MultipleActiveResultSets=true;";
 
         private const string TablesCount = "@TablesCount";
         private const string Indexes = "@Indexes";
@@ -69,7 +73,8 @@ namespace DataBase.Generator
                 var allTables = allTablesWithCoulmns.DistinctBy(x => x.TableName).ToList();
                 var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
 
-                var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html");
+                var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html")
+                    .GetNavBar();
 
                 index = index.Replace(TablesCount, allTables.Count() + "");
                 index = index.Replace(ViewsCount, allViews.Count() + "");
@@ -113,12 +118,19 @@ namespace DataBase.Generator
 
                 // create columns
 
-                var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html");
+                var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html").GetNavBar();
                 var cls = allTablesWithCoulmns.Select(x => x.GetForAllColumns())
                     .Aggregate((a, b) => a + b);
 
                 columns = columns.Replace(ColumnsCount, cls);
                 File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
+                
+                var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
+                var rts = allTables.Select(x=>x.SchemaName).Distinct()
+                    .Aggregate((a, b) => a + b);
+
+                columns = columns.Replace(Schemas, rts);
+                File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", columns);
             }
 
         }
@@ -126,7 +138,7 @@ namespace DataBase.Generator
         private void BuildTablePages(IGrouping<GroupBuListData, ListAlldata> item, List<ListAlldata> allIndexs,
             List<ListAlldata> allConstrain)
         {
-            var tempFile = File.ReadAllText(currentDirectory + "Resources\\tables\\index.html");
+            var tempFile = File.ReadAllText(currentDirectory + "Resources\\tables\\index.html").GetNavBar();
             var trs = "";
             foreach (var column in item)
             {
