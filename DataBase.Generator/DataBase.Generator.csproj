@@ -52,6 +52,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GroupBuListData.cs" />
     <Compile Include="Helper\ExtntionMethods.cs" />
     <Compile Include="Models\ListAlldata.cs" />
     <Compile Include="Program.cs" />
@@ -179,6 +180,8 @@
     <Content Include="Resources\main.js" />
     <Content Include="Resources\database.css" />
     <Content Include="Resources\database.js" />
+    <Content Include="Resources\routines.html" />
+    <Content Include="Resources\routines.js" />
     <Content Include="Resources\sql.sql" />
     <Content Include="Resources\tables\Index.html" />
     <Content Include="Resources\tables\table.js" />

@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace DataBase.Generator.Models
 {
     public class ServerDetails
@@ -44,6 +46,17 @@ namespace DataBase.Generator.Models
 
         public string Type { get; set; }
 
-
+        internal string GetForAllColumns()
+        {
+            var isNull = IsNullable ? "Null" : "Not Null";
+            return $@" <tr>
+                                    <td>{SchemaName}</td>
+                                    <td>{TableName}</td>
+                                    <td>{ColumnName}</td>
+                                    <td>{DataType}</td>
+                                    <td>{isNull}</td>
+                                    <td></td>
+                                </tr>";
+        }
     }
 }

@@ -78,11 +78,24 @@ namespace DataBase.Generator
                 index = index.Replace(SchemasCount, data.Select(c => c.SchemaName)
                     .DistinctBy(x => x).Count() + "");
                 index = index.Replace(StoredProceduresCount, allStoredProcedure.Count + "");
+
                 var trs = "";
-                foreach (var item in allTablesWithCoulmns.GroupBy(x =>
-                new { x.TableName, x.SchemaName, x.Type }).
-                    Concat(allViewsWithCoulmns.GroupBy(x =>
-                new { x.TableName, x.SchemaName, x.Type })))
+                var source1 = allTablesWithCoulmns.GroupBy(x =>
+                new GroupBuListData
+                {
+                    TableName = x.TableName,
+                    SchemaName = x.SchemaName,
+                    Type = x.Type
+                });
+                source1 = source1.Concat(allViewsWithCoulmns.GroupBy(x =>
+                new GroupBuListData
+                {
+                    TableName = x.TableName,
+                    SchemaName = x.SchemaName,
+                    Type = x.Type
+                }));
+
+                foreach (var item in source1)
                 {
                     trs += $@"<tr class='tbl even' valign='top'>
                                     <td class='detail'>{item.Key.SchemaName}</td>
@@ -101,26 +114,16 @@ namespace DataBase.Generator
                 // create columns
 
                 var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html");
-                var cls = "";
-                foreach (var item in allTablesWithCoulmns)
-                {
-                    var isNull = item.IsNullable ? "Null" : "Not Null";
-                    cls += $@" <tr>
-                                    <td>{item.SchemaName}</td>
-                                    <td>{item.TableName}</td>
-                                    <td>{item.ColumnName}</td>
-                                    <td>{item.DataType}</td>
-                                    <td>{isNull}</td>
-                                    <td></td>
-                                </tr>";
-                }
+                var cls = allTablesWithCoulmns.Select(x => x.GetForAllColumns())
+                    .Aggregate((a, b) => a + b);
+
                 columns = columns.Replace(ColumnsCount, cls);
                 File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
             }
 
         }
 
-        private void BuildTablePages(IGrouping<dynamic, ListAlldata> item, List<ListAlldata> allIndexs,
+        private void BuildTablePages(IGrouping<GroupBuListData, ListAlldata> item, List<ListAlldata> allIndexs,
             List<ListAlldata> allConstrain)
         {
             var tempFile = File.ReadAllText(currentDirectory + "Resources\\tables\\index.html");
