@@ -114,14 +114,14 @@ namespace DataBase.Generator
             File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
 
             var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
-            var rts = allTables.Select(x => x.SchemaName).Distinct()
-                .Aggregate((a, b) => "<tr><td>" + a + "</td></tr>" + "<tr><td>" + b + "</td></tr>");
+            var rts = allTables.Select(x => "<tr><td>" + x.SchemaName + "</td></tr>").Distinct()
+                .Aggregate((a, b) => a + b);
 
             schemas = schemas.Replace(Schemas, rts);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", schemas);
         }
 
-        private static IEnumerable<IGrouping<GroupBuListData, ListAlldata>> 
+        private static IEnumerable<IGrouping<GroupBuListData, ListAlldata>>
             LoadAllTablesAndViews(List<ListAlldata> allTablesWithCoulmns, List<ListAlldata> allViewsWithCoulmns)
         {
             var source1 = allTablesWithCoulmns.GroupBy(x =>
@@ -148,8 +148,7 @@ namespace DataBase.Generator
             index = index.Replace(ViewsCount, allViews.Count() + "");
             index = index.Replace(ColumnsCount, allTablesWithCoulmns.Count + "");
             index = index.Replace(ConstraintsCount, allTablesWithCoulmns.Count + "");
-            index = index.Replace(SchemasCount, data.Select(c => c.SchemaName)
-                .DistinctBy(x => x).Count() + "");
+            index = index.Replace(SchemasCount, allTables.Select(x => x.SchemaName).Distinct().Count() + "");
             index = index.Replace(StoredProceduresCount, allStoredProcedure.Count + "");
             return index;
         }
