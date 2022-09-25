@@ -29,6 +29,7 @@ namespace DataBase.Generator
 
 
         private const string TablesAndViewsTrs = "@TablesAndViewsTrs";
+        private const string DataBaseDetails = "@DataBaseDetails";
 
         public Form1()
         {
@@ -69,49 +70,57 @@ namespace DataBase.Generator
                 var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
 
                 var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html");
-                index = BuildIndex(index, allTablesWithCoulmns, allViewsWithCoulmns,
-                    data, allTables, allViews,
-                    allStoredProcedure, allIndexs,
-                    allConstrain);
 
-            }
-
-        }
-
-        private string BuildIndex(string index, List<ListAlldata> allTablesWithCoulmns,
-            List<ListAlldata> allViewsWithCoulmns, List<ListAlldata> data,
-            List<ListAlldata> allTables, List<ListAlldata> allViews, List<ListAlldata> allStoredProcedure,
-             List<ListAlldata> allIndexs, List<ListAlldata> allConstrain)
-        {
-            index = index.Replace(TablesCount, allTables.Count() + "");
-            index = index.Replace(ViewsCount, allViews.Count() + "");
-            index = index.Replace(ColumnsCount, allTablesWithCoulmns.Count + "");
-            index = index.Replace(ConstraintsCount, allTablesWithCoulmns.Count + "");
-            index = index.Replace(SchemasCount, data.Select(c => c.SchemaName)
-                .DistinctBy(x => x).Count() + "");
-            index = index.Replace(StoredProceduresCount, allStoredProcedure.Count + "");
-            var trs = "";
-            foreach (var item in allTablesWithCoulmns.GroupBy(x =>
-            new { x.TableName, x.SchemaName, x.Type }).
-                Concat(allViewsWithCoulmns.GroupBy(x =>
-            new { x.TableName, x.SchemaName, x.Type })))
-            {
-                trs += $@"<tr class='tbl even' valign='top'>
+                index = index.Replace(TablesCount, allTables.Count() + "");
+                index = index.Replace(ViewsCount, allViews.Count() + "");
+                index = index.Replace(ColumnsCount, allTablesWithCoulmns.Count + "");
+                index = index.Replace(ConstraintsCount, allTablesWithCoulmns.Count + "");
+                index = index.Replace(SchemasCount, data.Select(c => c.SchemaName)
+                    .DistinctBy(x => x).Count() + "");
+                index = index.Replace(StoredProceduresCount, allStoredProcedure.Count + "");
+                var trs = "";
+                foreach (var item in allTablesWithCoulmns.GroupBy(x =>
+                new { x.TableName, x.SchemaName, x.Type }).
+                    Concat(allViewsWithCoulmns.GroupBy(x =>
+                new { x.TableName, x.SchemaName, x.Type })))
+                {
+                    trs += $@"<tr class='tbl even' valign='top'>
                                     <td class='detail'>{item.Key.SchemaName}</td>
                                     <td class='detail'><a href='tables/{item.Key.TableName}.html'>{item.Key.TableName}</a></td>
                                     <td class='detail' align='right'>{item.Count()}</td>
                                     <td class='detail' align='right'>{item.Key.Type}</td>
                                     <td class='comment detail' style='display: table-cell;'></td>
                                 </tr>";
-                BuildTablePages(item, allIndexs, allConstrain) ;
+                    BuildTablePages(item, allIndexs, allConstrain);
 
+                }
+                index = index.Replace(TablesAndViewsTrs, trs);
+                index = index.Replace(DataBaseDetails, loadServerDetails.GetDetailsString());
+                File.WriteAllText(currentDirectory + ResourceTemp + "\\index.html", index);
+
+                // create columns
+
+                var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html");
+                var cls = "";
+                foreach (var item in allTablesWithCoulmns)
+                {
+                    var isNull = item.IsNullable ? "Null" : "Not Null";
+                    cls += $@" <tr>
+                                    <td>{item.SchemaName}</td>
+                                    <td>{item.TableName}</td>
+                                    <td>{item.ColumnName}</td>
+                                    <td>{item.DataType}</td>
+                                    <td>{isNull}</td>
+                                    <td></td>
+                                </tr>";
+                }
+                columns = columns.Replace(ColumnsCount, cls);
+                File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
             }
-            index = index.Replace(TablesAndViewsTrs, trs);
-            File.WriteAllText(currentDirectory + ResourceTemp + "\\index.html", index);
-            return index;
+
         }
 
-        private void BuildTablePages(IGrouping<dynamic, ListAlldata> item, List<ListAlldata> allIndexs, 
+        private void BuildTablePages(IGrouping<dynamic, ListAlldata> item, List<ListAlldata> allIndexs,
             List<ListAlldata> allConstrain)
         {
             var tempFile = File.ReadAllText(currentDirectory + "Resources\\tables\\index.html");
@@ -152,7 +161,7 @@ namespace DataBase.Generator
             }
             tempFile = tempFile.Replace(Relations, indx);
 
-            File.WriteAllText(currentDirectory + $"{ResourceTemp}\\tables\\{item.Key.TableName}.html",tempFile);
+            File.WriteAllText(currentDirectory + $"{ResourceTemp}\\tables\\{item.Key.TableName}.html", tempFile);
         }
 
         private void CopyResToRes2()

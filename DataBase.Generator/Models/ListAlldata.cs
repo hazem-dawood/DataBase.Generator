@@ -12,6 +12,11 @@ namespace DataBase.Generator.Models
 
         public string CLR_Version { get; set; }
 
+        public string GetDetailsString()
+        {
+            return $@"<p>Product_Version : {Product_Version}</p>
+            <p>Collation : {Collation}</p><p>CLR_Version : {CLR_Version}</p>";
+        }
     }
     public class ListAlldata
     {

@@ -130,6 +130,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\column.js" />
+    <Content Include="Resources\columns.html" />
     <Content Include="Resources\index.html" />
     <Content Include="Resources\lib\admin-lte\bootstrap\css\bootstrap.min.css" />
     <Content Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regular.svg" />
