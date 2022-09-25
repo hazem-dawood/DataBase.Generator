@@ -117,8 +117,8 @@ namespace DataBase.Generator
             var rts = allTables.Select(x => x.SchemaName).Distinct()
                 .Aggregate((a, b) => a + b);
 
-            columns = columns.Replace(Schemas, rts);
-            File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", columns);
+            schemas = schemas.Replace(Schemas, schemas);
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", schemas);
         }
 
         private static IEnumerable<IGrouping<GroupBuListData, ListAlldata>> 
