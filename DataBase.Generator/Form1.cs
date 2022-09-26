@@ -45,9 +45,9 @@ namespace DataBase.Generator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(Directory.Exists(currentDirectory + ResourceTemp))
+            if (Directory.Exists(currentDirectory + ResourceTemp))
             {
-                Directory.Delete(currentDirectory + ResourceTemp,true);
+                Directory.Delete(currentDirectory + ResourceTemp, true);
             }
             var loadServerDetails = new ServerDetails();
             try
@@ -86,7 +86,7 @@ namespace DataBase.Generator
             var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html")
                 .GetNavBar();
 
-            index = BuildIndex(data, allTablesWithCoulmns, allStoredProcedure,
+            index = BuildIndex(allTablesWithCoulmns, allStoredProcedure,
                 allTables, allViews, index);
 
             var trs = "";
@@ -117,31 +117,47 @@ namespace DataBase.Generator
 
             // create columns
 
+            BuildColumnPage(allTablesWithCoulmns);
+            BuildSchemas(allTables);
+            BuildStoredProcedures(allStoredProcedure);
+            BuildViewsPage(allViews);
+        }
+
+        private void BuildColumnPage(List<ListAlldata> allTablesWithCoulmns)
+        {
             var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html").GetNavBar();
             var cls = allTablesWithCoulmns.Select(x => x.GetForAllColumns())
                 .Aggregate((a, b) => a + b);
 
             columns = columns.Replace(ColumnsCount, cls);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
+        }
 
+        private void BuildSchemas(List<ListAlldata> allTables)
+        {
             var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
             var rts = allTables.Select(x => "<tr><td>" + x.SchemaName + "</td></tr>").Distinct()
                 .Aggregate((a, b) => a + b);
 
             schemas = schemas.Replace(Schemas, rts);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", schemas);
+        }
 
+        private void BuildStoredProcedures(List<ListAlldata> allStoredProcedure)
+        {
             var sps = File.ReadAllText(currentDirectory + ResourceTemp + "\\anomalies.html").GetNavBar();
             var spsTrs = allStoredProcedure
-                .Select(x=>$@"<tr><td>{x.SchemaName}</td><td>{x.TableName}</td><td>{x.Defainition}</td></tr>")
+                .Select(x => $@"<tr><td>{x.SchemaName}</td><td>{x.TableName}</td><td>{x.Defainition}</td></tr>")
                  .Aggregate((a, b) => a + b);
             sps = sps.Replace(StoredProcedures, spsTrs);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\anomalies.html", sps);
+        }
 
-
+        private void BuildViewsPage(List<ListAlldata> allViews)
+        {
             var views = File.ReadAllText(currentDirectory + ResourceTemp + "\\orphans.html").GetNavBar();
-            var allViewsData = allViews.GroupBy(x=>x.TableName)
-                .Select(c=>c.First())
+            var allViewsData = allViews.GroupBy(x => x.TableName)
+                .Select(c => c.First())
                 .Select(x => $@"<tr><td>{x.SchemaName}</td><td>{x.TableName}</td><td>{x.Defainition}</td></tr>")
                  .Aggregate((a, b) => a + b);
             views = views.Replace(TablesAndViewsTrs, allViewsData);
@@ -154,7 +170,7 @@ namespace DataBase.Generator
             return allTablesWithCoulmns.Concat(allViewsWithCoulmns).ToList();
         }
 
-        private static string BuildIndex(List<ListAlldata> data, List<ListAlldata> allTablesWithCoulmns,
+        private static string BuildIndex(List<ListAlldata> allTablesWithCoulmns,
             List<ListAlldata> allStoredProcedure, List<ListAlldata> allTables, List<ListAlldata> allViews, string index)
         {
             index = index.Replace(TablesCount, allTables.Count() + "");
