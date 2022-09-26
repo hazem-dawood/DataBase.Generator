@@ -137,6 +137,15 @@ namespace DataBase.Generator
                  .Aggregate((a, b) => a + b);
             sps = sps.Replace(StoredProcedures, spsTrs);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\anomalies.html", sps);
+
+
+            var views = File.ReadAllText(currentDirectory + ResourceTemp + "\\orphans.html").GetNavBar();
+            var allViewsData = allViews.GroupBy(x=>x.TableName)
+                .Select(c=>c.First())
+                .Select(x => $@"<tr><td>{x.SchemaName}</td><td>{x.TableName}</td><td>{x.Defainition}</td></tr>")
+                 .Aggregate((a, b) => a + b);
+            views = views.Replace(TablesAndViewsTrs, allViewsData);
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\orphans.html", views);
         }
 
         private static List<ListAlldata>

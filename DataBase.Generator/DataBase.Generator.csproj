@@ -182,6 +182,7 @@
     <Content Include="Resources\main.js" />
     <Content Include="Resources\database.css" />
     <Content Include="Resources\database.js" />
+    <Content Include="Resources\orphans.html" />
     <Content Include="Resources\routines.html" />
     <Content Include="Resources\routines.js" />
     <Content Include="Resources\sql.sql" />
