@@ -24,8 +24,10 @@ namespace DataBase.Generator.Models
     {
         public bool IsNullable { get; set; }
 
+        public bool PrimaryKey { get; set; }
+
         public string Defainition { get; set; }
-        
+
         public string SchemaName { get; set; }
 
         public string ReferencedTable { get; set; }
@@ -55,10 +57,10 @@ namespace DataBase.Generator.Models
         internal string GetForAllColumns()
         {
             var isNull = IsNullable ? "Null" : "Not Null";
-            return $@" <tr>
-                                    <td>{SchemaName}</td>
+            var isPrimary = PrimaryKey ? "<i class='icon ion-key iconkey' style='padding-left: 5px;'></i>" : "";
+            return $@" <tr><td>{SchemaName}</td>
                                     <td>{TableName}</td>
-                                    <td>{ColumnName}</td>
+                                    <td>{isPrimary} {ColumnName}</td>
                                     <td>{DataType}</td>
                                     <td>{isNull}</td>
                                     <td></td>

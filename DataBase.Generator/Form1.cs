@@ -104,6 +104,7 @@ namespace DataBase.Generator
                     x.Type
                 }))
             {
+
                 trs += $@"<tr class='tbl even' valign='top'>
                                     <td class='detail'>{item.Key.SchemaName}</td>
                                     <td class='detail'><a href='tables/{item.Key.TableName}.html'>{item.Key.TableName}</a></td>
@@ -206,11 +207,12 @@ namespace DataBase.Generator
         {
             var tempFile = File.ReadAllText(currentDirectory + "Resources\\tables\\index.html").GetNavBar();
             var trs = "";
-            foreach (var column in item)
+            foreach (var column in item.OrderByDescending(x => x.PrimaryKey))
             {
+                var isPrimary = column.PrimaryKey ? "<i class='icon ion-key iconkey' style='padding-left: 5px;'></i>" : "";
                 var isNull = column.IsNullable ? "Null" : "Not Null";
-                trs += $@"<tr><td class='primaryKey' title='Primary Key'>
-                                        <span id=''>{column.ColumnName}</span>
+                trs += $@"<tr><td>
+                                 {isPrimary}<span id=''>{column.ColumnName}</span>
                                     </td>
                                     <td>{column.DataType}</td>
                                     <td>{isNull}</td>
