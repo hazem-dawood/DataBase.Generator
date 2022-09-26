@@ -132,10 +132,10 @@ namespace DataBase.Generator
             var cls = allConstrain
                 .Select(x => $@" <tr>
                                     <td>{x.SchemaName}</td>
-                                    <td><a href='tables/{x.TableName}'>{x.TableName}</a></td>
+                                    <td><a href='tables/{x.TableName}.html'>{x.TableName}</a></td>
                                     <td>{x.ColumnName}</td>
                                     <td>{x.Defainition}</td>
-                                    <td><a href='tables/{x.ReferencedTable}'>{x.ReferencedTable}</a></td>
+                                    <td><a href='tables/{x.ReferencedTable}.html'>{x.ReferencedTable}</a></td>
                                     <td>{x.ReferencedColumn}</td>
                                 </tr>")
                 .Aggregate((a, b) => a + b);
