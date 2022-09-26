@@ -15,6 +15,51 @@ namespace DataBase.Generator
        
         public static string GetNavBar(this string s)
         {
+            s = s.Replace(Form1.Script, @" <script src='lib/admin-lte/plugins/jQuery/jquery-2.2.3.min.js'></script>
+    <script src='lib/admin-lte/plugins/jQueryUI/jquery-ui.min.js'></script>
+    <script src='lib/admin-lte/bootstrap/js/bootstrap.min.js'></script>
+    <script src='lib/datatables.net/jquery.dataTables.min.js'></script>
+    <script src='lib/datatables.net-bs/js/dataTables.bootstrap.min.js'></script>
+    <script src='lib/datatables.net-buttons/dataTables.buttons.min.js'></script>
+    <script src='lib/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'></script>
+    <script src='lib/datatables.net-buttons/buttons.html5.min.js'></script>
+    <script src='lib/datatables.net-buttons/buttons.print.min.js'></script>
+    <script src='lib/datatables.net-buttons/buttons.colVis.min.js'></script>
+    <script src='lib/js-xlsx/xlsx.full.min.js'></script>
+    <script src='lib/pdfmake/pdfmake.min.js'></script>
+    <script src='lib/pdfmake/vfs_fonts.js'></script>
+    <script src='lib/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js'></script>
+    <script src='lib/admin-lte/plugins/fastclick/fastclick.js'></script>
+    <script src='lib/salvattore/salvattore.min.js'></script>
+    <script src='lib/anchor-js/anchor.min.js'></script>
+    <script src='lib/codemirror/codemirror.js'></script>
+    <script src='lib/codemirror/sql.js'></script>
+    <script src='lib/admin-lte/dist/js/app.min.js'></script><script src='main.js''></script>");
+            s = s.Replace(Form1.HeadTag, $@"<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='content-type' content='text/html;charset=utf-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Database</title>
+
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link rel='icon' type='image/png' sizes='16x16' href='favicon.png'>
+    <link rel='stylesheet' href='lib/admin-lte/bootstrap/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='lib/font-awesome/css/font-awesome.min.css'>
+    <link rel='stylesheet' href='lib/ionicons/css/ionicons.min.css'>
+    <link rel='stylesheet' href='lib/datatables.net-bs/css/dataTables.bootstrap.min.css'>
+    <link rel='stylesheet' href='lib/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'>
+    <link rel='stylesheet' href='lib/codemirror/codemirror.css'>
+    <link href='fonts/indieflower/indie-flower.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/source-sans-pro/source-sans-pro.css' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='lib/admin-lte/dist/css/AdminLTE.min.css'>
+    <link rel='stylesheet' href='lib/salvattore/salvattore.css'>
+    <link rel='stylesheet' href='lib/admin-lte/dist/css/skins/_all-skins.min.css'>
+    <link rel='stylesheet' href='database.css'>
+    <!--[if lt IE 9]>
+    <script src='lib/html5shiv/html5shiv.min.js'></script>
+    <script src='lib/respond/respond.min.js'></script>
+    <![endif]-->
+</head>");
             s = s.Replace(Form1.navBar, $@" <header class='main-header'>
             <nav class='navbar navbar-static-top'>
                 <div class='container'>

@@ -45,7 +45,7 @@ union
 
 SELECT sch.name AS [schema_name],tab1.name AS [table],
 col1.name AS [column],
- P1.name AS DataType ,0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'Constrain',0,'',
+ P1.name AS DataType ,0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'Constrain',0, obj.name AS FK_NAME,
 tab2.name AS [ReferencedTable],
 col2.name AS [ReferencedColumn]
 FROM sys.foreign_key_columns fkc

@@ -15,6 +15,8 @@ namespace DataBase.Generator
         internal const string navBar = "@NavBar";
         internal const string footer = "@Footer";
         internal const string Schemas = "@Schemas";
+        internal const string Script = "@Script";
+        internal const string HeadTag = "@Head";
         internal const string StoredProcedures = "@StoredProcedures";
 
         private const string ResourceTemp = "Resources1";
@@ -121,6 +123,24 @@ namespace DataBase.Generator
             BuildSchemas(allTables);
             BuildStoredProcedures(allStoredProcedure);
             BuildViewsPage(allViews);
+            BuildConstrainPage(allConstrain);
+        }
+
+        private void BuildConstrainPage(List<ListAlldata> allConstrain)
+        {
+            var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\constraints.html").GetNavBar();
+            var cls = allConstrain
+                .Select(x => $@" <tr>
+                                    <td>{x.SchemaName}</td>
+                                    <td>{x.TableName}</td>
+                                    <td>{x.ColumnName}</td>
+                                    <td>{x.Defainition}</td>
+                                    <td>{x.ReferencedTable}</td>
+                                    <td>{x.ReferencedColumn}</td>
+                                </tr>")
+                .Aggregate((a, b) => a + b);
+            columns = columns.Replace(ConstraintsCount, cls);
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\constraints.html", columns);
         }
 
         private void BuildColumnPage(List<ListAlldata> allTablesWithCoulmns)
