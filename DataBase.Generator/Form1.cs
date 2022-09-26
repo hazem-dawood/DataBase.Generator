@@ -132,10 +132,10 @@ namespace DataBase.Generator
             var cls = allConstrain
                 .Select(x => $@" <tr>
                                     <td>{x.SchemaName}</td>
-                                    <td>{x.TableName}</td>
+                                    <td><a href='tables/{x.TableName}'>{x.TableName}</a></td>
                                     <td>{x.ColumnName}</td>
                                     <td>{x.Defainition}</td>
-                                    <td>{x.ReferencedTable}</td>
+                                    <td><a href='tables/{x.ReferencedTable}'>{x.ReferencedTable}</a></td>
                                     <td>{x.ReferencedColumn}</td>
                                 </tr>")
                 .Aggregate((a, b) => a + b);
@@ -173,6 +173,7 @@ namespace DataBase.Generator
 
         private void BuildViewsPage(List<ListAlldata> allViews)
         {
+            if (allViews.Count == 0) return;
             var views = File.ReadAllText(currentDirectory + ResourceTemp + "\\orphans.html").GetNavBar();
             var allViewsData = allViews.GroupBy(x => x.TableName)
                 .Select(c => c.First())

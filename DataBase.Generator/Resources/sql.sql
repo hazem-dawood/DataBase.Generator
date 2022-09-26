@@ -43,6 +43,15 @@ object_definition(object_id) Defainition,'',''
 FROM sys.objects WHERE type = 'P' 
 union
 
+SELECT sc.name, v.name  AS View_Name
+      ,c.name  AS Column_Name,p.name, 0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'View'[Type],c.is_nullable,
+	  object_definition(v.object_id),'',''
+FROM sys.views  v 
+INNER JOIN sys.all_columns  c  ON v.object_id = c.object_id
+inner join sys.Schemas sc on sc.schema_id = v.schema_id
+JOIN sys.types AS P ON C.system_type_id = P.system_type_id
+union
+
 SELECT sch.name AS [schema_name],tab1.name AS [table],
 col1.name AS [column],
  P1.name AS DataType ,0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'Constrain',0, obj.name AS FK_NAME,
