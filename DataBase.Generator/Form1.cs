@@ -43,7 +43,7 @@ namespace DataBase.Generator
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (Directory.Exists(currentDirectory + ResourceTemp))
             {
@@ -128,7 +128,6 @@ namespace DataBase.Generator
             var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html").GetNavBar();
             var cls = allTablesWithCoulmns.Select(x => x.GetForAllColumns())
                 .Aggregate((a, b) => a + b);
-
             columns = columns.Replace(ColumnsCount, cls);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
         }
@@ -138,7 +137,6 @@ namespace DataBase.Generator
             var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
             var rts = allTables.Select(x => "<tr><td>" + x.SchemaName + "</td></tr>").Distinct()
                 .Aggregate((a, b) => a + b);
-
             schemas = schemas.Replace(Schemas, rts);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", schemas);
         }
@@ -164,8 +162,7 @@ namespace DataBase.Generator
             File.WriteAllText(currentDirectory + ResourceTemp + "\\orphans.html", views);
         }
 
-        private static List<ListAlldata>
-            LoadAllTablesAndViews(List<ListAlldata> allTablesWithCoulmns, List<ListAlldata> allViewsWithCoulmns)
+        private static List<ListAlldata> LoadAllTablesAndViews(List<ListAlldata> allTablesWithCoulmns, List<ListAlldata> allViewsWithCoulmns)
         {
             return allTablesWithCoulmns.Concat(allViewsWithCoulmns).ToList();
         }
@@ -222,7 +219,6 @@ namespace DataBase.Generator
                                 </tr>";
             }
             tempFile = tempFile.Replace(Relations, indx);
-
             File.WriteAllText(currentDirectory + $"{ResourceTemp}\\tables\\{item.Key.TableName}.html", tempFile);
         }
 
@@ -242,10 +238,8 @@ namespace DataBase.Generator
                     cmd.CommandTimeout = 60 * 20;
                     if (sqlConnection.State != ConnectionState.Open)
                         sqlConnection.Open();
-
                     cmd.CommandType = commandType;
                     var reader = cmd.ExecuteReader();
-
                     return reader.DataReaderMapToList<U>();
                 }
             }

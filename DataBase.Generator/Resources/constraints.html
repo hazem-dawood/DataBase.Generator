@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Database</title>
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+    <link rel="stylesheet" href="lib/admin-lte/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="lib/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="lib/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="lib/datatables.net-buttons-bs/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" href="lib/codemirror/codemirror.css">
+    <link href='fonts/indieflower/indie-flower.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/source-sans-pro/source-sans-pro.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="lib/admin-lte/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="lib/salvattore/salvattore.css">
+    <link rel="stylesheet" href="lib/admin-lte/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="database.css">
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition skin-blue layout-top-nav">
+    <div class="wrapper">
+        @NavBar
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>Constraints</h1>
+            </section>
+            <section class="content">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="ion ion-key"></i>
+                        <h3 class="box-title">11 Foreign Key Constraints</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table id="constraint_table" class="table table-bordered table-striped dataTable" role="grid">
+                            <thead align='left'>
+                                <tr>
+                                    <th>Constraint Name</th>
+                                    <th>Child Column</th>
+                                    <th>Parent Column</th>
+                                    <th>Delete Rule</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FK_EmployeeReportsTo</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td>
+                                                    <a href='tables/Employee.html'>Employee</a><span>.ReportsTo</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td>
+                                                    <a href='tables/Employee.html'>Employee</a><span>.EmployeeId</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
+                                </tr>
+                                <tr>
+                                    <td>FK_TrackAlbumId</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td>
+                                                    <a href='tables/Track.html'>Track</a><span>.AlbumId</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td>
+                                                    <a href='tables/Album.html'>Album</a><span>.AlbumId</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
+                                </tr>
+                                <tr>
+                                    <td>FK_TrackGenreId</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td>
+                                                    <a href='tables/Track.html'>Track</a><span>.GenreId</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td>
+                                                    <a href='tables/Genre.html'>Genre</a><span>.GenreId</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <script>
+                var config = {
+                    pagination: true
+                }
+            </script>
+        </div>
+        @Footer
+    </div>
+
+    <script src="lib/admin-lte/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="lib/admin-lte/plugins/jQueryUI/jquery-ui.min.js"></script>
+    <script src="lib/admin-lte/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="lib/datatables.net-buttons/dataTables.buttons.min.js"></script>
+    <script src="lib/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="lib/datatables.net-buttons/buttons.html5.min.js"></script>
+    <script src="lib/datatables.net-buttons/buttons.print.min.js"></script>
+    <script src="lib/datatables.net-buttons/buttons.colVis.min.js"></script>
+    <script src="lib/js-xlsx/xlsx.full.min.js"></script>
+    <script src="lib/pdfmake/pdfmake.min.js"></script>
+    <script src="lib/pdfmake/vfs_fonts.js"></script>
+    <script src="lib/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="lib/admin-lte/plugins/fastclick/fastclick.js"></script>
+    <script src="lib/salvattore/salvattore.min.js"></script>
+    <script src="lib/anchor-js/anchor.min.js"></script>
+    <script src="lib/codemirror/codemirror.js"></script>
+    <script src="lib/codemirror/sql.js"></script>
+    <script src="lib/admin-lte/dist/js/app.min.js"></script>
+    <script src="main.js"></script>
+    <script src="constraint.js"></script>
+    <script src="database.js"></script>
+</body>
+</html>
