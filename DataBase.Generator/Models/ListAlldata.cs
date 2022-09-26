@@ -24,6 +24,7 @@ namespace DataBase.Generator.Models
     {
         public bool IsNullable { get; set; }
 
+        public string Defainition { get; set; }
         public string SchemaName { get; set; }
 
         public string TableName { get; set; }

@@ -15,6 +15,7 @@ namespace DataBase.Generator
         internal const string navBar = "@NavBar";
         internal const string footer = "@Footer";
         internal const string Schemas = "@Schemas";
+        internal const string StoredProcedures = "@StoredProcedures";
 
         private const string ResourceTemp = "Resources1";
         private readonly string query;
@@ -44,6 +45,10 @@ namespace DataBase.Generator
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if(Directory.Exists(currentDirectory + ResourceTemp))
+            {
+                Directory.Delete(currentDirectory + ResourceTemp,true);
+            }
             var loadServerDetails = new ServerDetails();
             try
             {
@@ -85,10 +90,16 @@ namespace DataBase.Generator
                 allTables, allViews, index);
 
             var trs = "";
-            IEnumerable<IGrouping<GroupBuListData, ListAlldata>> source1 =
+            var source1 =
                 LoadAllTablesAndViews(allTablesWithCoulmns, allViewsWithCoulmns);
 
-            foreach (var item in source1)
+            foreach (var item in source1
+                .GroupBy(x => new
+                {
+                    x.TableName,
+                    x.SchemaName,
+                    x.Type
+                }))
             {
                 trs += $@"<tr class='tbl even' valign='top'>
                                     <td class='detail'>{item.Key.SchemaName}</td>
@@ -119,26 +130,19 @@ namespace DataBase.Generator
 
             schemas = schemas.Replace(Schemas, rts);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", schemas);
+
+            var sps = File.ReadAllText(currentDirectory + ResourceTemp + "\\anomalies.html").GetNavBar();
+            var spsTrs = allStoredProcedure
+                .Select(x=>$@"<tr><td>{x.SchemaName}</td><td>{x.TableName}</td><td>{x.Defainition}</td></tr>")
+                 .Aggregate((a, b) => a + b);
+            sps = sps.Replace(StoredProcedures, spsTrs);
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\anomalies.html", sps);
         }
 
-        private static IEnumerable<IGrouping<GroupBuListData, ListAlldata>>
+        private static List<ListAlldata>
             LoadAllTablesAndViews(List<ListAlldata> allTablesWithCoulmns, List<ListAlldata> allViewsWithCoulmns)
         {
-            var source1 = allTablesWithCoulmns.GroupBy(x =>
-            new GroupBuListData
-            {
-                TableName = x.TableName,
-                SchemaName = x.SchemaName,
-                Type = x.Type
-            });
-            source1 = source1.Concat(allViewsWithCoulmns.GroupBy(x =>
-            new GroupBuListData
-            {
-                TableName = x.TableName,
-                SchemaName = x.SchemaName,
-                Type = x.Type
-            }));
-            return source1;
+            return allTablesWithCoulmns.Concat(allViewsWithCoulmns).ToList();
         }
 
         private static string BuildIndex(List<ListAlldata> data, List<ListAlldata> allTablesWithCoulmns,
@@ -153,7 +157,7 @@ namespace DataBase.Generator
             return index;
         }
 
-        private void BuildTablePages(IGrouping<GroupBuListData, ListAlldata> item, List<ListAlldata> allIndexs,
+        private void BuildTablePages(IGrouping<dynamic, ListAlldata> item, List<ListAlldata> allIndexs,
             List<ListAlldata> allConstrain)
         {
             var tempFile = File.ReadAllText(currentDirectory + "Resources\\tables\\index.html").GetNavBar();

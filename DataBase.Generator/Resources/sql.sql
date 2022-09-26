@@ -1,7 +1,7 @@
 SELECT sc.name as SchemaName, T.name AS TableName ,
     C.name AS ColumnName ,
     P.name AS DataType ,0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],
-	'Table'[Type],c.is_nullable IsNullable
+	'Table'[Type],c.is_nullable IsNullable,object_definition(T.object_id) Defainition
 FROM   sys.objects AS T
     JOIN sys.columns AS C ON T.object_id = C.object_id
     JOIN sys.types AS P ON C.system_type_id = P.system_type_id
@@ -14,7 +14,7 @@ SCHEMA_NAME(t.schema_id),
      IndexName = ind.name,
      ColumnName = col.name
 	 ,0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],
-	'Index'[Type],0
+	'Index'[Type],0,object_definition(ind.object_id) Defainition
 FROM 
      sys.indexes ind 
 INNER JOIN 
@@ -34,15 +34,17 @@ SELECT s.name AS table_schema ,OBJECT_NAME(parent_obj) AS table_name , sysobject
 ,OBJECTPROPERTY( id, 'ExecIsUpdateTrigger') AS isupdate ,OBJECTPROPERTY( id, 'ExecIsDeleteTrigger') AS isdelete 
 ,OBJECTPROPERTY( id, 'ExecIsInsertTrigger') AS isinsert ,OBJECTPROPERTY( id, 'ExecIsAfterTrigger') AS isafter 
 ,OBJECTPROPERTY( id, 'ExecIsInsteadOfTrigger') AS isinsteadof ,OBJECTPROPERTY(id, 'ExecIsTriggerDisabled') AS [disabled] ,
-'Trigger',0
+'Trigger',0,object_definition(object_id) Defainition
 FROM sysobjects INNER JOIN sys.tables t ON sysobjects.parent_obj = t.object_id 
 INNER JOIN sys.schemas s ON t.schema_id = s.schema_id  WHERE sysobjects.type = 'TR' 
 union
-SELECT SCHEMA_NAME(schema_id) AS [Schema],[name],'','', 0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'Stored Procedure'[Type],0
+SELECT SCHEMA_NAME(schema_id) AS [Schema],[name],'','', 0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'Stored Procedure'[Type],0,
+object_definition(object_id) Defainition
 FROM sys.objects WHERE type = 'P' 
 union
 SELECT sc.name, v.name  AS View_Name
-      ,c.name  AS Column_Name,p.name, 0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'View'[Type],c.is_nullable
+      ,c.name  AS Column_Name,p.name, 0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'View'[Type],c.is_nullable,
+	  object_definition(v.object_id)
 FROM sys.views  v 
 INNER JOIN sys.all_columns  c  ON v.object_id = c.object_id
 inner join sys.Schemas sc on sc.schema_id = v.schema_id
@@ -51,7 +53,7 @@ union
 select [Schema], table_view,
 constraint_name,
     details + ' : ' + constraint_type
-	, 0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'Constrain'[Type],0
+	, 0 IsUpdate,0 IsDelete,0 IsInsert,0 IsAfter,0 IsInsteadOf,0 [Disabled],'Constrain'[Type],0,''
     
 from (
     select schema_name(t.schema_id)[Schema] , t.[name] as table_view, 
