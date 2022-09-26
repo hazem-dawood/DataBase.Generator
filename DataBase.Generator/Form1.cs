@@ -51,7 +51,8 @@ namespace DataBase.Generator
             {
                 Directory.Delete(currentDirectory + ResourceTemp, true);
             }
-            var loadServerDetails = new ServerDetails();
+
+            ServerDetails loadServerDetails;
             try
             {
                 loadServerDetails = ExecuteStoredProcedure<ServerDetails>
