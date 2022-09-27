@@ -23,7 +23,7 @@ namespace DataBase.Generator
         private readonly string query;
         private readonly string currentDirectory;
 
-        private readonly string connectionString = "Persist Security Info=true;Server=108.170.14.114\\SQLJMDDS;Database=jmdssnew;user id=sa;password=matrix@#200;MultipleActiveResultSets=true;";
+        private string connectionString = "Persist Security Info=true;Server={};Database=jmdssnew;user id={};password={};MultipleActiveResultSets=true;";
 
         private const string TablesCount = "@TablesCount";
         private const string Indexes = "@Indexes";
@@ -43,10 +43,20 @@ namespace DataBase.Generator
             currentDirectory = Directory.GetCurrentDirectory().Replace(@"bin\Debug", "");
             query = File.ReadAllText(currentDirectory + "Resources\\" + "sql.sql");
             InitializeComponent();
+            txtServer.Text = "108.170.14.114\\SQLJMDDS";
+            txtUser.Text = "sa";
+            txtPassword.Text = "matrix@#200";
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            if (cbDataBase.SelectedItem == null || cbDataBase.SelectedItem.ToString().IsEmpty() == true)
+            {
+                MessageBox.Show("Please Select a database");
+                return;
+            }
+            connectionString = $@"Persist Security Info=true;Server={txtServer.Text};
+Database={cbDataBase.SelectedItem.ToString()};user id={txtUser.Text};password={txtPassword.Text};MultipleActiveResultSets=true;";
             if (Directory.Exists(currentDirectory + ResourceTemp))
             {
                 Directory.Delete(currentDirectory + ResourceTemp, true);
@@ -273,6 +283,20 @@ namespace DataBase.Generator
                     var reader = cmd.ExecuteReader();
                     return reader.DataReaderMapToList<U>();
                 }
+            }
+        }
+
+        private void cbDataBase_Enter(object sender, EventArgs e)
+        {
+            if (txtServer.Text.IsEmpty() == false &&
+                txtPassword.Text.IsEmpty() == false &&
+                txtUser.Text.IsEmpty() == false)
+            {
+                connectionString = $"Persist Security Info=true;Server={txtServer.Text};user id={txtUser.Text};password={txtPassword.Text};MultipleActiveResultSets=true;"; ;
+                var lst = ExecuteStoredProcedure<ListAlldata>
+                    ("SELECT [name] DataBaseName FROM master.dbo.sysdatabases");
+                cbDataBase.Items.Clear();
+                cbDataBase.Items.AddRange(lst.Select(x => x.DataBaseName).ToArray());
             }
         }
     }

@@ -22,6 +22,8 @@ namespace DataBase.Generator.Models
     }
     public class ListAlldata
     {
+        public string DataBaseName { get; set; }
+
         public bool IsNullable { get; set; }
 
         public bool PrimaryKey { get; set; }
