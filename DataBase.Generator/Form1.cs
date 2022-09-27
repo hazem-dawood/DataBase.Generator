@@ -126,6 +126,13 @@ namespace DataBase.Generator
             BuildStoredProcedures(allStoredProcedure);
             BuildViewsPage(allViews);
             BuildConstrainPage(allConstrain);
+            BuildRelationShipsPage(allTables);
+        }
+
+        private void BuildRelationShipsPage(List<ListAlldata> allTables)
+        {
+            var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\relationships.html").GetNavBar();
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\relationships.html", columns);
         }
 
         private void BuildConstrainPage(List<ListAlldata> allConstrain)

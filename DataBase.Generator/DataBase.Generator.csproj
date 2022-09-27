@@ -138,6 +138,11 @@
     <Content Include="Resources\constraint.js" />
     <Content Include="Resources\constraints.html" />
     <Content Include="Resources\index.html" />
+    <Content Include="Resources\js\app-b787a47fc8.js" />
+    <Content Include="Resources\js\cookieconsent.min.js" />
+    <Content Include="Resources\js\dropin.min.js" />
+    <Content Include="Resources\js\googletagmanager.js" />
+    <Content Include="Resources\js\lib-c295ced81d.js" />
     <Content Include="Resources\lib\admin-lte\bootstrap\css\bootstrap.min.css" />
     <Content Include="Resources\lib\admin-lte\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Resources\lib\admin-lte\bootstrap\js\bootstrap.min.js" />
@@ -185,9 +190,11 @@
     <Content Include="Resources\database.css" />
     <Content Include="Resources\database.js" />
     <Content Include="Resources\orphans.html" />
+    <Content Include="Resources\relationships.html" />
     <Content Include="Resources\routines.html" />
     <Content Include="Resources\routines.js" />
     <Content Include="Resources\sql.sql" />
+    <Content Include="Resources\styles\lib-4f3bee1839.css" />
     <Content Include="Resources\tables\Index.html" />
     <Content Include="Resources\tables\table.js" />
   </ItemGroup>
