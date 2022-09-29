@@ -14058,7 +14058,8 @@
                 );
             });
     }),
-    ace.define("ace/keyboard/textinput", ["require", "exports", "module", "ace/lib/event", "ace/lib/useragent", "ace/lib/dom", "ace/lib/lang"], function (t, e, n) {
+    ace.define("ace/keyboard/textinput", ["require", "exports", "module", 
+    "ace/lib/event", "ace/lib/useragent", "ace/lib/dom", "ace/lib/lang"], function (t, e, n) {
         "use strict";
         var i = t("../lib/event"),
             r = t("../lib/useragent"),

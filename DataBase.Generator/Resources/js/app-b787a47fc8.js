@@ -4051,7 +4051,9 @@ var QdbdApp;
                 var i = this;
                 return (
                     this.TrackingService.trackImportFromSql(t),
-                    this.$http.post("api/v1/schemaImport/fromSql", { sql: e, importType: t, parsedSql: "" }).then(function (e) {
+                    this.$http.post("api/v1/schemaImport/fromSql", {
+                        sql: e, importType: t, parsedSql: ""
+                    }).then(function (e) {
                         return i.onImportFromSql(t, e.data);
                     })
                 );
