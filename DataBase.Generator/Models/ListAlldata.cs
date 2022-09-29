@@ -32,6 +32,7 @@ namespace DataBase.Generator.Models
 
         public string SchemaName { get; set; }
 
+        public string ReferencedSchema { get; set; }
         public string ReferencedTable { get; set; }
 
         public string ReferencedColumn { get; set; }

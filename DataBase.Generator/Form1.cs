@@ -96,7 +96,8 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
             var allTables = allTablesWithCoulmns.DistinctBy(x => x.TableName).ToList();
             var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
             
-            var erd = new BuildTablesToERD().LoadString(allTablesWithCoulmns);
+            var erd = new BuildTablesToERD().LoadString(allTablesWithCoulmns,
+                allConstrain);
 
             var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html")
                 .GetNavBar();

@@ -9,24 +9,34 @@ namespace DataBase
 {
     public class BuildTablesToERD
     {
-        public string LoadString(List<ListAlldata> allTables)
+        public string LoadString(List<ListAlldata> allTables, List<ListAlldata> allConstrain)
         {
             var data =
                 allTables.GroupBy(x => new
-            {
-                x.TableName,
-                x.SchemaName
-            });
+                {
+                    x.TableName,
+                    x.SchemaName
+                });
             var s = "";
             foreach (var item in data)
             {
-                s += Environment.NewLine + $@"{item.Key.SchemaName.Trim()}_{item.Key.TableName}";
+                s += (s == "" ? "" : Environment.NewLine)
+                    + $@"{item.Key.SchemaName.Trim()}_{item.Key.TableName}";
                 s += Environment.NewLine + "-" + Environment.NewLine;
 
-                foreach (var column in item.DistinctBy(z=>z.ColumnName))
+                foreach (var column in item.DistinctBy(z => z.ColumnName))
                 {
+                    var hasRelation =
+                        allConstrain.Where(c => c.ColumnName == column.ColumnName
+                        && c.TableName == item.Key.TableName
+                        && c.SchemaName == item.Key.SchemaName)
+                        .Select(c =>
+                        $" FK >- {c.ReferencedSchema.Trim()}_{c.ReferencedTable.Trim()}.{c.ReferencedColumn}")
+                        .FirstOrDefault();
+
                     s += $@"{column.ColumnName} " + (column.PrimaryKey ? "PK " : "")
-                        + GetCSharpType(column.DataType) + Environment.NewLine;
+                        + GetCSharpType(column.DataType) + (hasRelation ?? "")
+                        + Environment.NewLine;
                 }
             }
             return s;
