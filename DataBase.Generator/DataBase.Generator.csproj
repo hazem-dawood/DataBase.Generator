@@ -53,6 +53,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GroupBuListData.cs" />
+    <Compile Include="Helper\BuildTablesToERD.cs" />
     <Compile Include="Helper\ExtntionMethods.cs" />
     <Compile Include="Models\ListAlldata.cs" />
     <Compile Include="Program.cs" />

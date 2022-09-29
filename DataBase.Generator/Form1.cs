@@ -56,7 +56,7 @@ namespace DataBase.Generator
                 return;
             }
             connectionString = $@"Persist Security Info=true;Server={txtServer.Text};
-Database={cbDataBase.SelectedItem.ToString()};user id={txtUser.Text};password={txtPassword.Text};MultipleActiveResultSets=true;";
+Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.Text};MultipleActiveResultSets=true;";
             if (Directory.Exists(currentDirectory + ResourceTemp))
             {
                 Directory.Delete(currentDirectory + ResourceTemp, true);
@@ -95,6 +95,8 @@ Database={cbDataBase.SelectedItem.ToString()};user id={txtUser.Text};password={t
 
             var allTables = allTablesWithCoulmns.DistinctBy(x => x.TableName).ToList();
             var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
+            
+            var erd = new BuildTablesToERD().LoadString(allTablesWithCoulmns);
 
             var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\index.html")
                 .GetNavBar();
@@ -125,6 +127,7 @@ Database={cbDataBase.SelectedItem.ToString()};user id={txtUser.Text};password={t
                 BuildTablePages(item, allIndexs, allConstrain);
 
             }
+
             index = index.Replace(TablesAndViewsTrs, trs);
             index = index.Replace(DataBaseDetails, loadServerDetails.GetDetailsString());
             File.WriteAllText(currentDirectory + ResourceTemp + "\\index.html", index);

@@ -12,7 +12,7 @@ namespace DataBase.Generator
 {
     public static class ExtntionMethods
     {
-       
+
         public static string GetNavBar(this string s)
         {
             s = s.Replace(Form1.Script, @" <script src='lib/admin-lte/plugins/jQuery/jquery-2.2.3.min.js'></script>
@@ -102,8 +102,9 @@ namespace DataBase.Generator
                 File.Copy(newPath, newPath.Replace(directory.FullName, destinationDir), true);
             }
         }
+
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>
-    (this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+          (this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             HashSet<TKey> seenKeys = new HashSet<TKey>();
             foreach (TSource element in source)
@@ -114,6 +115,7 @@ namespace DataBase.Generator
                 }
             }
         }
+
         public static List<T> DataReaderMapToList<T>(this IDataReader dr)
         {
             List<T> list = new List<T>();

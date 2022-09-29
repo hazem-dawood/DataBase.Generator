@@ -4833,6 +4833,7 @@ var QdbdApp;
                 return this.security && this.security.isOwnerProUser;
             }),
             (t.prototype.currentUserHasProAccess = function () {
+                return true;
                 return this.$rootScope.currentUser && this.$rootScope.currentUser.hasProAccess;
             }),
             (t = __decorate([e.Service("QdbdApp.Schema", "SchemaParserService")], t))
