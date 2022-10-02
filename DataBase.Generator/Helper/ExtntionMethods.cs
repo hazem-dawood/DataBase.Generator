@@ -24,7 +24,7 @@ namespace DataBase.Generator
             }
             else if (column.ColumnName.ToLower() == "CreatedBy".ToLower())
             {
-                return "is the Created User id of current record";
+                return "is the Created User id of current record (Foreign Key)";
             }
             else if (column.ColumnName.ToLower() == "DeletedDate".ToLower())
             {
@@ -32,7 +32,7 @@ namespace DataBase.Generator
             }
             else if (column.ColumnName.ToLower() == "DeletedBy".ToLower())
             {
-                return "is the Deleted User id of current record";
+                return "is the Deleted User id of current record (Foreign Key)";
             }
             else if (column.ColumnName.ToLower() == "IsActive".ToLower())
             {
@@ -44,7 +44,7 @@ namespace DataBase.Generator
             }
             else if (column.ColumnName.ToLower() == "ModifiedBy".ToLower())
             {
-                return "is the last Modified User id of current record";
+                return "is the last Modified User id of current record (Foreign Key)";
             }
             else if (column.ColumnName.ToLower() == "ModifiedDate".ToLower())
             {
@@ -56,7 +56,7 @@ namespace DataBase.Generator
             }
             else if (column.ColumnName.ToLower() == "ContractId".ToLower())
             {
-                return "is the Contract Id ";
+                return "is the Contract Id (Foreign Key)";
             }
             else if (column.ColumnName.ToLower() == "Name".ToLower())
             {
@@ -69,6 +69,10 @@ namespace DataBase.Generator
             else if (column.ColumnName.ToLower() == "Note".ToLower())
             {
                 return "Note";
+            }
+            else if (column.ColumnName.ToLower() == "EquipmentId".ToLower())
+            {
+                return "is Equipment Id (Foreign Key)";
             }
 
             return "";
