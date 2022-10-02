@@ -48,11 +48,15 @@ namespace DataBase.Generator
             }
             else if (column.ColumnName.ToLower() == "ModifiedDate".ToLower())
             {
-                return "is last Modified Date";
+                return "is the last Modified Date";
             }
             else if (column.ColumnName.ToLower() == "GuidId".ToLower())
             {
                 return "unique id used in ui";
+            }
+            else if (column.ColumnName.ToLower() == "ContractId".ToLower())
+            {
+                return "is the Contract Id ";
             }
 
             return "";
