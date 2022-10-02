@@ -12,11 +12,8 @@
                         <span class="label label-primary pull-right"><i class="fa fa-database fa-2x"></i></span>
                     </div>
                     <div class="box-body">
-                        <div class="row">
-                            <div id="button_group_one" class="col-md-3 col-sm-6"></div>
-                            <div id="button_group_two" class="col-md-2 col-sm-4 pull-right text-right"></div>
-                        </div>
-                        <table id="database_objects" class="table table-bordered table-striped dataTable" role="grid">
+                        
+                        <table role="grid" class="table table-bordered table-striped dataTable">
                             <thead>
                                 <tr>
                                     <th>Schema</th>
@@ -27,7 +24,7 @@
                                     <th title='Comments' class="toggle"><span>Comments</span></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="database_objects2">
                                 
                             </tbody>
                         </table>
@@ -51,40 +48,36 @@
 
             let params = (new URL(document.location)).searchParams;
             let name = params.get("sc");
-            var database_objects = document.getElementById('database_objects').lastChild;
+            var database_objects2 = document.getElementById('database_objects2');
             for (var i = 0; i < jsData.length; i++) {
-                if (jsData[i].SchemaName.toLowerCase() == sc.toLowerCase()) {
+                if (jsData[i].SchemaName.toLowerCase() == name.toLowerCase()) {
                     var tr = document.createElement('tr');
 
                     var fTd = document.createElement('td');
-                    fTd.innerHTML = jsData[i].SchemaName;
+                    fTd.innerText = jsData[i].SchemaName;
                     tr.appendChild(fTd);
 
                     var sTd = document.createElement('td');
-                    sTd.innerHTML = jsData[i].TableName;
+                    sTd.innerHTML = `<a href="tables/${jsData[i].TableName}.html">${jsData[i].TableName}</a>`;
                     tr.appendChild(sTd);
 
                     var tTd = document.createElement('td');
-                    tTd.innerHTML = jsData[i].ColumnName;
+                    tTd.innerText = jsData[i].ColumnName;
                     tr.appendChild(tTd);
 
                     var foTd = document.createElement('td');
-                    foTd.innerHTML = jsData[i].DataType;
+                    foTd.innerText = jsData[i].DataType;
                     tr.appendChild(foTd);
 
                     var fiTd = document.createElement('td');
-                    fiTd.innerHTML = jsData[i].IsNullable ? "Null" : "Not Null";
-                    tr.appendChild(fiTd);
-
-                    var fiTd = document.createElement('td');
-                    fiTd.innerHTML = jsData[i].IsNullable ? "Null" : "Not Null";
+                    fiTd.innerText = jsData[i].IsNullable ? "Null" : "Not Null";
                     tr.appendChild(fiTd);
 
                     var siTd = document.createElement('td');
-                    siTd.innerHTML = jsData[i].Description;
+                    siTd.innerText = jsData[i].Description;
                     tr.appendChild(siTd);
 
-                    database_objects.appendChild(tr);
+                    database_objects2.appendChild(tr);
                 }
             }
         };

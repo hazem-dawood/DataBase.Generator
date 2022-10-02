@@ -141,7 +141,7 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
             BuildViewsPage(allViews);
             BuildConstrainPage(allConstrain);
             BuildRelationShipsPage(allTables);
-            BuildSchemaTablesPage(allTables);
+            BuildSchemaTablesPage(allTablesWithCoulmns);
         }
 
         private void BuildSchemaTablesPage(List<ListAlldata> allTables)
