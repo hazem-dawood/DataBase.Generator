@@ -12,7 +12,7 @@ FROM   sys.objects AS T
     JOIN sys.columns AS C ON T.object_id = C.object_id
     JOIN sys.types AS P ON C.system_type_id = P.system_type_id
 	inner join sys.Schemas sc on sc.schema_id = t.schema_id
-WHERE  T.type_desc = 'USER_TABLE'
+WHERE  T.type_desc = 'USER_TABLE' and P.name <>'sysname'
 union
 SELECT 
 SCHEMA_NAME(t.schema_id),

@@ -58,6 +58,14 @@ namespace DataBase.Generator
             {
                 return "is the Contract Id ";
             }
+            else if (column.ColumnName.ToLower() == "Name".ToLower())
+            {
+                return "Name";
+            }
+            else if (column.ColumnName.ToLower() == "DefaultName".ToLower())
+            {
+                return "If There No Name In the selected language then will use Default Name";
+            }
 
             return "";
         }
