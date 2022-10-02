@@ -57,16 +57,20 @@ namespace DataBase.Generator.Models
 
         public string Type { get; set; }
 
+        public string Description { get { return this.GetColumnDescription(); } }
+
         internal string GetForAllColumns()
         {
             var isNull = IsNullable ? "Null" : "Not Null";
             var isPrimary = PrimaryKey ? "<i class='icon ion-key iconkey' style='padding-left: 5px;'></i>" : "";
+            string cment = this.GetColumnDescription();
+
             return $@" <tr><td>{SchemaName}</td>
-                                    <td>{TableName}</td>
+                                    <td><a href='tables/{TableName}.html'>{TableName}</a></td>
                                     <td>{isPrimary} {ColumnName}</td>
                                     <td>{DataType}</td>
                                     <td>{isNull}</td>
-                                    <td></td>
+                                    <td>{cment}</td>
                                 </tr>";
         }
     }

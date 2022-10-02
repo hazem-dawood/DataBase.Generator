@@ -95,7 +95,7 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
 
             var allTables = allTablesWithCoulmns.DistinctBy(x => x.TableName).ToList();
             var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
-            
+
             var erd = new BuildTablesToERD().LoadString(allTablesWithCoulmns,
                 allConstrain);
 
@@ -141,6 +141,15 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
             BuildViewsPage(allViews);
             BuildConstrainPage(allConstrain);
             BuildRelationShipsPage(allTables);
+            BuildSchemaTablesPage(allTables);
+        }
+
+        private void BuildSchemaTablesPage(List<ListAlldata> allTables)
+        {
+            var sct = File.ReadAllText(currentDirectory + ResourceTemp + "\\schemaTables.html").GetNavBar();
+            sct = sct.Replace("@JsonData", Newtonsoft.Json.JsonConvert.SerializeObject(allTables));
+
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\schemaTables.html", sct);
         }
 
         private void BuildRelationShipsPage(List<ListAlldata> allTables)
@@ -169,7 +178,9 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
         private void BuildColumnPage(List<ListAlldata> allTablesWithCoulmns)
         {
             var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html").GetNavBar();
-            var cls = allTablesWithCoulmns.Select(x => x.GetForAllColumns())
+            var cls = allTablesWithCoulmns
+                .DistinctBy(x => new { x.ColumnName, x.DataType })
+                .Select(x => x.GetForAllColumns())
                 .Aggregate((a, b) => a + b);
             columns = columns.Replace(ColumnsCount, cls);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\columns.html", columns);
@@ -178,7 +189,8 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
         private void BuildSchemas(List<ListAlldata> allTables)
         {
             var schemas = File.ReadAllText(currentDirectory + ResourceTemp + "\\routines.html").GetNavBar();
-            var rts = allTables.Select(x => "<tr><td>" + x.SchemaName + "</td></tr>").Distinct()
+            var rts = allTables.Select(x =>
+            $"<tr><td><a href='schemaTables.html?sc={x.SchemaName}'>" + x.SchemaName + "</a></td></tr>").Distinct()
                 .Aggregate((a, b) => a + b);
             schemas = schemas.Replace(Schemas, rts);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\routines.html", schemas);
@@ -232,16 +244,19 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
             {
                 var isPrimary = column.PrimaryKey ? "<i class='icon ion-key iconkey' style='padding-left: 5px;'></i>" : "";
                 var isNull = column.IsNullable ? "Null" : "Not Null";
+                string cment = column.GetColumnDescription();
                 trs += $@"<tr><td>
                                  {isPrimary}<span id=''>{column.ColumnName}</span>
                                     </td>
                                     <td>{column.DataType}</td>
                                     <td>{isNull}</td>
-                                    <td></td>
+                                    <td>{cment}</td>
                                 </tr>";
             }
             tempFile = tempFile.Replace(TablesAndViewsTrs, trs);
             tempFile = tempFile.Replace(ColumnsCount, item.Count() + "");
+
+            tempFile = tempFile.Replace("@TableName", item.Key.TableName);
 
             var indx = "";
             foreach (var indexx in allIndexs.Where(x => x.TableName == item.Key.TableName))

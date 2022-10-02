@@ -12,7 +12,51 @@ namespace DataBase.Generator
 {
     public static class ExtntionMethods
     {
+        public static string GetColumnDescription(this ListAlldata column)
+        {
+            if (column.PrimaryKey)
+            {
+                return "Is Primary Key";
+            }
+            else if (column.ColumnName.ToLower() == "CreatedDate".ToLower())
+            {
+                return "is the Created Date of current record";
+            }
+            else if (column.ColumnName.ToLower() == "CreatedBy".ToLower())
+            {
+                return "is the Created User id of current record";
+            }
+            else if (column.ColumnName.ToLower() == "DeletedDate".ToLower())
+            {
+                return "is the Deleted Date of current record";
+            }
+            else if (column.ColumnName.ToLower() == "DeletedBy".ToLower())
+            {
+                return "is the Deleted User id of current record";
+            }
+            else if (column.ColumnName.ToLower() == "IsActive".ToLower())
+            {
+                return "is current record active or not";
+            }
+            else if (column.ColumnName.ToLower() == "IsDeleted".ToLower())
+            {
+                return "is current record deleted or not";
+            }
+            else if (column.ColumnName.ToLower() == "ModifiedBy".ToLower())
+            {
+                return "is the last Modified User id of current record";
+            }
+            else if (column.ColumnName.ToLower() == "ModifiedDate".ToLower())
+            {
+                return "is last Modified Date";
+            }
+            else if (column.ColumnName.ToLower() == "GuidId".ToLower())
+            {
+                return "unique id used in ui";
+            }
 
+            return "";
+        }
         public static string GetNavBar(this string s)
         {
             s = s.Replace(Form1.Script, @" <script src='lib/admin-lte/plugins/jQuery/jquery-2.2.3.min.js'></script>
@@ -74,7 +118,7 @@ namespace DataBase.Generator
                             <li><a href='index.html'>Tables <span class='sr-only'>(current)</span></a></li>
                             <li><a href='columns.html' title='All of the columns in the schema'>Columns</a></li>
                             <li><a href='constraints.html' title='Useful for diagnosing error messages that just give constraint name or number'>Constraints</a></li>
-                            <li><a href='relationships.html' title='Diagram of table relationships'>Relationships</a></li>
+                            <!-- <li><a href='relationships.html' title='Diagram of table relationships'>Relationships</a></li> -->
                             <li><a href='orphans.html' title='View of tables with neither parents nor children'>Views</a></li>
                             <li><a href='anomalies.html' title='Things that might not be quite right'>Stored Procedures</a></li>
                             <li><a href='routines.html' title='Procedures and functions'>Schemas</a></li>
