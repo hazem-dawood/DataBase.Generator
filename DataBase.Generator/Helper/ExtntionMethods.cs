@@ -66,6 +66,10 @@ namespace DataBase.Generator
             {
                 return "If There No Name In the selected language then will use Default Name";
             }
+            else if (column.ColumnName.ToLower() == "Note".ToLower())
+            {
+                return "Note";
+            }
 
             return "";
         }

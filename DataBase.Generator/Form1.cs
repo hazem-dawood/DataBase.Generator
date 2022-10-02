@@ -179,7 +179,13 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
         {
             var columns = File.ReadAllText(currentDirectory + ResourceTemp + "\\columns.html").GetNavBar();
             var cls = allTablesWithCoulmns
-                .DistinctBy(x => new { x.ColumnName, x.DataType })
+                .DistinctBy(x => new
+                {
+                    x.ColumnName,
+                    x.DataType,
+                    x.TableName,
+                    x.SchemaName
+                })
                 .Select(x => x.GetForAllColumns())
                 .Aggregate((a, b) => a + b);
             columns = columns.Replace(ColumnsCount, cls);
