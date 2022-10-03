@@ -74,6 +74,10 @@ namespace DataBase.Generator
             {
                 return "is Equipment Id (Foreign Key)";
             }
+            else if (column.ColumnName.ToLower() == "ViolationId".ToLower())
+            {
+                return "is Violation Id (Foreign Key)";
+            }
 
             return "";
         }

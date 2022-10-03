@@ -50,7 +50,7 @@
             let name = params.get("sc");
             var database_objects2 = document.getElementById('database_objects2');
             for (var i = 0; i < jsData.length; i++) {
-                if (jsData[i].SchemaName.toLowerCase() == name.toLowerCase()) {
+                if (jsData[i].SchemaName.toLowerCase().trim() == name.toLowerCase().trim()) {
                     var tr = document.createElement('tr');
 
                     var fTd = document.createElement('td');
