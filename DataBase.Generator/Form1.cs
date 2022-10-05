@@ -93,6 +93,8 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
             var allConstrain = data.Where(x => x.Type == "Constrain").ToList();
             var allIndexs = data.Where(x => x.Type == "Index").ToList();
 
+            var allTypes = data.Where(x => x.Type == "Types").ToList();
+
             var allTables = allTablesWithCoulmns.DistinctBy(x => x.TableName).ToList();
             var allViews = allViewsWithCoulmns.DistinctBy(x => x.TableName).ToList();
 
@@ -134,7 +136,7 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
             File.WriteAllText(currentDirectory + ResourceTemp + "\\index.html", index);
 
             // create columns
-
+            BuildTypesPage(allTypes);
             BuildColumnPage(allTablesWithCoulmns);
             BuildSchemas(allTables);
             BuildStoredProcedures(allStoredProcedure);
@@ -142,6 +144,35 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
             BuildConstrainPage(allConstrain);
             BuildRelationShipsPage(allTables);
             BuildSchemaTablesPage(allTablesWithCoulmns);
+        }
+
+        private void BuildTypesPage(List<ListAlldata> allTypes)
+        {
+            var index = File.ReadAllText(currentDirectory + ResourceTemp + "\\types.html")
+                .GetNavBar();
+            var trs = "";
+            foreach (var item in allTypes
+                .GroupBy(x => new
+                {
+                    x.TableName,
+                    x.SchemaName,
+                    x.Type
+                }))
+            {
+
+                trs += $@"<tr class='tbl even' valign='top'>
+                                    <td class='detail'>{item.Key.SchemaName}</td>
+                                    <td class='detail'><a href='tables/{item.Key.TableName}.html'>{item.Key.TableName}</a></td>
+                                    <td class='detail' align='right'>{item.Count()}</td>
+                                    <td class='comment detail' style='display: table-cell;'></td>
+                                </tr>";
+                BuildTablePages(item, new List<ListAlldata>(), new List<ListAlldata>());
+
+            }
+
+            index = index.Replace(TablesAndViewsTrs, trs);
+            File.WriteAllText(currentDirectory + ResourceTemp + "\\types.html", index);
+
         }
 
         private void BuildSchemaTablesPage(List<ListAlldata> allTables)
@@ -206,10 +237,83 @@ Database={cbDataBase.SelectedItem};user id={txtUser.Text};password={txtPassword.
         {
             var sps = File.ReadAllText(currentDirectory + ResourceTemp + "\\anomalies.html").GetNavBar();
             var spsTrs = allStoredProcedure
-                .Select(x => $@"<tr><td>{x.SchemaName}</td><td>{x.TableName}</td><td>{x.Defainition}</td></tr>")
+                .Select(x =>
+                {
+                    var s =
+                    $@"<tr><td>{x.SchemaName}</td><td>{x.TableName}</td><td>
+<button class='btn btn-success' onclick='$(this).next().toggle()' type='button'>Show/Hide</button>
+<div style='display: none;'>{x.Defainition}</div></td><td>";
+                    if (!x.StoredParameters.IsEmpty())
+                    {
+                        s += @"<table class='table table-bordered'><thead><tr><th>Param Name</th><th>Description</th></tr></thead><tbody>";
+                        foreach (var p in x.StoredParameters
+                        .Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            s += $@"<tr><td>{p}</td><td>{GetParameterDescription(p)}</td></tr>";
+                        }
+                        s += "</tbody></table>";
+                    }
+                    s += @"</td><td></td></tr>";
+                    return s;
+                })
                  .Aggregate((a, b) => a + b);
             sps = sps.Replace(StoredProcedures, spsTrs);
             File.WriteAllText(currentDirectory + ResourceTemp + "\\anomalies.html", sps);
+        }
+
+        private string GetParameterDescription(string p)
+        {
+            p = p.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+            switch (p.Replace("@", "").Trim().ToLower())
+            {
+                case "displaylength":
+                    return "Show the number of certain items on one page";
+                case "displaystart":
+                    return "Page number to show the number of items required";
+                case "sortcol":
+                    return "Sort Data Asc or Desc";
+                case "sortdir":
+                    return "[Deprecated]";
+                case "search":
+                    return "search string(nvarchar)";
+                case "languageid":
+                    return "application is multi language then should use user logged in language";
+                case "userid":
+                    return "every user has different regions then should show items belongs to user contracts and sub districts";
+                case "contracttypeid":
+                    return "contract type used to filter data";
+                case "contractid":
+                    return "contract id used to filter data";
+                case "isdeleted":
+                    return "show deleted data or not";
+                case "datefrom":
+                    return "search data from specified date";
+                case "dateto":
+                    return "search data to specified date";
+                case "approvetype":
+                    return "search data by approve type";
+                case "workertype":
+                    return "search data by worker type";
+                case "jobtitle":
+                    return "search data by job title";
+                case "musthavefingerprint":
+                    return "is data must have finger print enabled or not";
+                case "isabovecontractual":
+                    return "is data must have finger print enabled or not";
+                case "workerids":
+                    return "search data by Worker Ids";
+                case "jobtitleids":
+                    return "search data by JobTitle Ids";
+                case "contractids":
+                case "contractsids":
+                    return "search data by Contract Ids";
+                case "companiesid":
+                    return "search data by Companies Ids";
+                case "operation":
+                    return "get workers by operation (absence , holiday)";
+            }
+
+            return "";
         }
 
         private void BuildViewsPage(List<ListAlldata> allViews)

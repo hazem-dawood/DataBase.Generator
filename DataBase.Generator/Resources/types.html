@@ -24,13 +24,12 @@
                                         <tr>
                                             <th>Schema</th>
                                             <th>Name</th>
-                                            <th>Definition</th>
-                                            <th>Parameter</th>
-                                            <th>Description</th>
+                                            <th align="right" valign="bottom">Columns</th>
+                                            <th class="toggle">Comments</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @StoredProcedures
+                                        @TablesAndViewsTrs
                                     </tbody>
                                 </table>
                             </div>
@@ -43,7 +42,6 @@
     </div>
 
     @Script
-    <script src="anomalies.js"></script>
     <script src="database.js"></script>
 </body>
 

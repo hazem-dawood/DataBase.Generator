@@ -136,6 +136,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\types.html" />
     <Content Include="Resources\anomalies.html" />
     <Content Include="Resources\anomalies.js" />
     <Content Include="Resources\column.js" />

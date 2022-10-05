@@ -57,6 +57,8 @@ namespace DataBase.Generator.Models
 
         public string Type { get; set; }
 
+        public string StoredParameters { get; set; }
+
         public string Description { get { return this.GetColumnDescription(); } }
 
         internal string GetForAllColumns()
